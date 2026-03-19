@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
 import 'providers/pokemon_provider.dart';
+import 'providers/favorites_provider.dart';
 
 void main() {
   runApp(const PokedexApp());
@@ -15,6 +16,7 @@ class PokedexApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => PokemonProvider()..init()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
       ],
       child: MaterialApp(
         title: 'Pokédex',

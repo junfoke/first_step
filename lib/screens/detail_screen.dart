@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../providers/pokemon_provider.dart';
+import '../providers/favorites_provider.dart';
 import '../models/pokemon_detail.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -19,7 +20,25 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(pokemonName.toUpperCase())),
+      appBar: AppBar(
+        title: Text(pokemonName.toUpperCase()),
+        actions: [
+          Consumer<FavoritesProvider>(
+            builder: (context, provider, child) {
+              final isFavorite = provider.isFavorite(pokemonId);
+              return IconButton(
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? Colors.pinkAccent : Colors.white,
+                ),
+                onPressed: () {
+                  provider.toggleFavorite(pokemonId);
+                },
+              );
+            },
+          ),
+        ],
+      ),
       body: FutureBuilder<PokemonDetail?>(
         future: context.read<PokemonProvider>().getPokemonDetail(pokemonId),
         builder: (context, snapshot) {
